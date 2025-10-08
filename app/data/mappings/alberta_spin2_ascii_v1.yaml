@@ -1,0 +1,21 @@
+version: "alberta_spin2_ascii_v1"
+records:
+  - id: TITLE_HEADER
+    match: { type_at: 1, equals: "TH" }
+    fields:
+      title_number: { start: 3, len: 12 }
+      linc: { start: 15, len: 10 }
+      issue_date: { start: 26, len: 8, parse: { date: "YYYYMMDD" } }
+  - id: OWNER
+    match: { type_at: 1, equals: "OW" }
+    fields:
+      sequence: { start: 3, len: 3, int: true }
+      name: { start: 6, len: 60, trim: true }
+      type: { start: 66, len: 10 }
+  - id: INSTRUMENT
+    match: { type_at: 1, equals: "IN" }
+    fields:
+      number:  { start: 3, len: 12 }
+      i_type:  { start: 15, len: 20 }
+      date:    { start: 35, len: 8, parse: { date: "YYYYMMDD" } }
+      remarks: { start: 43, len: 80 }

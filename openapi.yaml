@@ -1,0 +1,165 @@
+openapi: 3.0.3
+info:
+  title: Title Document Creator API (Pro)
+  version: 1.0.0
+servers:
+  - url: http://localhost:8000
+paths:
+  /v1/parse-ascii:
+    post:
+      summary: Parse SPIN 2 ASCII to canonical XML
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                ascii_text:
+                  type: string
+      responses:
+        '200':
+          description: Parsed XML
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  xml:
+                    type: string
+  /v1/validate:
+    post:
+      summary: Validate canonical XML against SPIN 2 XSD
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [xml]
+              properties:
+                xml:
+                  type: string
+      responses:
+        '200':
+          description: Validation result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message: { type: string }
+                        line: { type: integer, nullable: true }
+                        column: { type: integer, nullable: true }
+  /v1/ingest-pdf:
+    post:
+      summary: Ingest prior title PDF to produce XML candidates (backfill)
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: XML candidates
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  xml_candidates:
+                    type: array
+                    items:
+                      type: string
+                  confidence:
+                    type: number
+                    format: float
+  /v1/render:
+    post:
+      summary: Render canonical XML to pixel-perfect PDF
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [xml]
+              properties:
+                xml:
+                  type: string
+                template_id:
+                  type: string
+                  default: alberta_title_v1
+                options:
+                  type: object
+                  properties:
+                    pdfa:
+                      type: boolean
+                      default: true
+      responses:
+        '200':
+          description: Rendered PDF
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+  /v1/reserve-title-number:
+    post:
+      summary: Reserve or generate a title number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                strategy:
+                  type: string
+                  enum: [sequential, uuid, external]
+                  default: sequential
+                seed:
+                  type: string
+      responses:
+        '200':
+          description: Reserved number
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  title_number:
+                    type: string
+  /v1/templates:
+    get:
+      summary: List available templates
+      responses:
+        '200':
+          description: Templates
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  templates:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        template_id: { type: string }
+                        version: { type: string }

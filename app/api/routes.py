@@ -1,0 +1,59 @@
+from fastapi import APIRouter, UploadFile, File, Form, HTTPException
+from fastapi.responses import StreamingResponse
+from pydantic import BaseModel
+from typing import Optional
+from app.services import ascii_parser, xml_validator, pdf_ingest, renderer, title_numbers, template_engine
+import io, json, os, glob
+
+router = APIRouter()
+
+class XMLBody(BaseModel):
+    xml: str
+    template_id: Optional[str] = "alberta_title_v1"
+    options: Optional[dict] = {"pdfa": True}
+
+@router.get("/templates")
+async def list_templates():
+    paths = glob.glob("app/data/templates/*.json")
+    items = []
+    for p in paths:
+        try:
+            data = json.load(open(p, "r"))
+            items.append({"template_id": data.get("template_id"), "version": data.get("version")})
+        except Exception:
+            pass
+    return {"templates": items}
+
+@router.post("/parse-ascii")
+async def parse_ascii(file: Optional[UploadFile] = File(None), ascii_text: Optional[str] = Form(None)):
+    try:
+        content = (await file.read()).decode("utf-8") if file else (ascii_text or "")
+        xml = ascii_parser.parse_ascii_to_xml(content, mapping_path="app/data/mappings/alberta_spin2_ascii_v1.yaml")
+        return {"xml": xml}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+@router.post("/validate")
+async def validate_xml(body: XMLBody):
+    ok, errors = xml_validator.validate(body.xml)
+    return {"ok": ok, "errors": errors}
+
+@router.post("/ingest-pdf")
+async def ingest_pdf(file: UploadFile = File(...)):
+    data = await file.read()
+    xml_candidates, confidence = pdf_ingest.pdf_to_xml_candidates(data)
+    return {"xml_candidates": xml_candidates, "confidence": confidence}
+
+@router.post("/render")
+async def render_pdf(body: XMLBody):
+    pdf_bytes = renderer.render(body.xml, template_id=body.template_id, options=body.options or {})
+    return StreamingResponse(io.BytesIO(pdf_bytes), media_type="application/pdf")
+
+class ReserveBody(BaseModel):
+    strategy: Optional[str] = "sequential"
+    seed: Optional[str] = None
+
+@router.post("/reserve-title-number")
+async def reserve_title_number(body: ReserveBody):
+    tn = title_numbers.reserve(strategy=body.strategy, seed=body.seed)
+    return {"title_number": tn}

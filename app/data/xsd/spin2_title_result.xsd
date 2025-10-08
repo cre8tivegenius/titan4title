@@ -1,0 +1,821 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2013 sp1 (x64) (http://www.altova.com) by D-389134 (Alberta Government) -->
+<!-- © Copyright 2013, Government of Alberta. All rights reserved. The Government of Alberta is the owner of all material / data on Spin2 including the copyright and any trademarks. Spin2 is provided by the Government of Alberta on an "as is" and "as available" basis and we reserve the right to make changes to our site at any time. With the exception of the land title certificate, survey plan and document search product, there is no warranty that the material / data on this site is accurate, complete, current, reliable or error-free, and the Government of Alberta, its agents, employees and contractors will not be liable to you for any damages, direct or indirect, or any lost profits arising out of the operation of this site. The use of this site is at your sole risk. The use of this site by an account holder is subject to the terms and conditions set out in the account holder's agreement with the Government of Alberta. No person is permitted to redistribute any material / data on this site without the express written permission of the Government of Alberta. The fees payable by you for the products that are available on Spin2 are as set out in the Product Catalogue. By use of this material, the above terms of access and use of Spin2 have been agreed upon. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="ProductTitleResult">
+		<xs:annotation>
+			<xs:documentation>Contains the SPIN Order Number and the elements for all the titles in the order</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Order">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="OrderNumber" type="xs:positiveInteger">
+								<xs:annotation>
+									<xs:documentation>The order number of the SPIN order that the titles were generated for</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="TitleData" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Title" minOccurs="0" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>The elements for a single title</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="TitleNumber">
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:maxLength value="12"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="FormattedTitleNumber" minOccurs="0">
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:maxLength value="16"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="Type">
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:maxLength value="40"/>
+													<xs:enumeration value="Title"/>
+													<xs:enumeration value="Non Patent Record Sheet"/>
+													<xs:enumeration value="Condominium Plan Sheet"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="RightsType">
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:maxLength value="8"/>
+													<xs:enumeration value="Surface"/>
+													<xs:enumeration value="Mineral"/>
+													<xs:enumeration value="Both"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="Consolidated" type="xs:boolean">
+											<xs:annotation>
+												<xs:documentation>A title is consolidated when the information for all its parcels is the same, so that this information needs to be printed only once on the title. If any parcel has legal text, the title is not consolidated, even if it has only one parcel. </xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="CreateDate" type="xs:date"/>
+										<xs:element name="ExpiryDate" type="xs:date" minOccurs="0"/>
+										<xs:element name="ShortLegalDescription" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Only exists for consolidated titles and condo plan sheets - used on a title to create the wording for 'Legal Description' </xs:documentation>
+											</xs:annotation>
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:maxLength value="40"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="Estate" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>PartyEstateCode of the first owner or 'Non-Patent' for Type 'N' titles.</xs:documentation>
+											</xs:annotation>
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:maxLength value="12"/>
+													<xs:enumeration value="Fee Simple"/>
+													<xs:enumeration value="Leasehold"/>
+													<xs:enumeration value="Life Estate"/>
+													<xs:enumeration value="Subleasehold"/>
+													<xs:enumeration value="Non-Patent"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="CondoSharesNumber" type="xs:integer" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>If this exists then the title is for a condo unit </xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="CondoNumberOfUnits" type="xs:string" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Only exists if TitleType = 'Condominium Plan Sheet'</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="Municipality" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>The Municipality of the first Parcel is printed on the title. Only occasionally does a Parcel not  have a Municipality.</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="Code">
+														<xs:simpleType>
+															<xs:restriction base="xs:string">
+																<xs:maxLength value="4"/>
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:element>
+													<xs:element name="Name" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>If the Municipality Code is not valid, there will not be a Name</xs:documentation>
+														</xs:annotation>
+														<xs:simpleType>
+															<xs:restriction base="xs:string">
+																<xs:maxLength value="60"/>
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="RegistrationDetails">
+											<xs:annotation>
+												<xs:documentation>These details all come from Document Number 0</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="DocumentNumber">
+														<xs:simpleType>
+															<xs:restriction base="xs:string">
+																<xs:maxLength value="12"/>
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:element>
+													<xs:element name="Date" type="xs:date"/>
+													<xs:element ref="DocumentType"/>
+													<xs:element name="Value" type="xs:decimal" minOccurs="0"/>
+													<xs:choice minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>When both ConsiderationAmount and ConsiderationText are present, amount takes precedence.</xs:documentation>
+														</xs:annotation>
+														<xs:element name="ConsiderationAmount" type="xs:decimal"/>
+														<xs:element name="ConsiderationText">
+															<xs:simpleType>
+																<xs:restriction base="xs:string">
+																	<xs:maxLength value="16"/>
+																</xs:restriction>
+															</xs:simpleType>
+														</xs:element>
+													</xs:choice>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="LifeTerm" type="xs:string" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Document types 'LIFE' and 'TFLI' only</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="Parcels">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="Parcel" maxOccurs="unbounded">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="LINCNumber">
+																	<xs:simpleType>
+																		<xs:restriction base="xs:string">
+																			<xs:maxLength value="10"/>
+																		</xs:restriction>
+																	</xs:simpleType>
+																</xs:element>
+																<xs:element name="ShortLegalType">
+																	<xs:annotation>
+																		<xs:documentation>P = PBL, A = ATS</xs:documentation>
+																	</xs:annotation>
+																	<xs:simpleType>
+																		<xs:restriction base="xs:string">
+																			<xs:length value="3"/>
+																			<xs:enumeration value="ATS"/>
+																			<xs:enumeration value="PBL"/>
+																		</xs:restriction>
+																	</xs:simpleType>
+																</xs:element>
+																<xs:element name="ShortLegal">
+																	<xs:simpleType>
+																		<xs:restriction base="xs:string">
+																			<xs:maxLength value="40"/>
+																		</xs:restriction>
+																	</xs:simpleType>
+																</xs:element>
+																<xs:element name="LegalText" minOccurs="0">
+																	<xs:complexType>
+																		<xs:sequence>
+																			<xs:element name="TextLine" maxOccurs="unbounded">
+																				<xs:simpleType>
+																					<xs:restriction base="xs:string">
+																						<xs:maxLength value="200"/>
+																						<xs:whiteSpace value="preserve"/>
+																					</xs:restriction>
+																				</xs:simpleType>
+																			</xs:element>
+																		</xs:sequence>
+																	</xs:complexType>
+																</xs:element>
+																<xs:element name="RightsText" minOccurs="0">
+																	<xs:complexType>
+																		<xs:sequence>
+																			<xs:element name="TextType">
+																				<xs:annotation>
+																					<xs:documentation>M = Mineral Rights
+E = Mineral Exception</xs:documentation>
+																				</xs:annotation>
+																				<xs:simpleType>
+																					<xs:restriction base="xs:string">
+																						<xs:maxLength value="1"/>
+																						<xs:enumeration value="M"/>
+																						<xs:enumeration value="E"/>
+																					</xs:restriction>
+																				</xs:simpleType>
+																			</xs:element>
+																			<xs:element name="TextLines">
+																				<xs:complexType>
+																					<xs:sequence>
+																						<xs:element name="TextLine" maxOccurs="unbounded">
+																							<xs:simpleType>
+																								<xs:restriction base="xs:string">
+																									<xs:maxLength value="80"/>
+																								</xs:restriction>
+																							</xs:simpleType>
+																						</xs:element>
+																					</xs:sequence>
+																				</xs:complexType>
+																			</xs:element>
+																		</xs:sequence>
+																	</xs:complexType>
+																</xs:element>
+																<xs:element name="AreaDetails" minOccurs="0">
+																	<xs:complexType>
+																		<xs:sequence>
+																			<xs:element name="Area" type="xs:decimal" minOccurs="0">
+																				<xs:annotation>
+																					<xs:documentation>In either Acres or Hectares as specified by the UOM</xs:documentation>
+																				</xs:annotation>
+																			</xs:element>
+																			<xs:element name="UOM" minOccurs="0">
+																				<xs:simpleType>
+																					<xs:restriction base="xs:string">
+																						<xs:maxLength value="8"/>
+																						<xs:enumeration value="Acres"/>
+																						<xs:enumeration value="Hectares"/>
+																					</xs:restriction>
+																				</xs:simpleType>
+																			</xs:element>
+																		</xs:sequence>
+																	</xs:complexType>
+																</xs:element>
+																<xs:element name="MineralWork" type="xs:boolean" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>Causes the words 'and the right to work same' to be printed on a title</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+																<xs:element name="LandReferences" minOccurs="0">
+																	<xs:complexType>
+																		<xs:sequence>
+																			<xs:element name="ATS" maxOccurs="unbounded">
+																				<xs:simpleType>
+																					<xs:restriction base="xs:string">
+																						<xs:maxLength value="40"/>
+																					</xs:restriction>
+																				</xs:simpleType>
+																			</xs:element>
+																		</xs:sequence>
+																	</xs:complexType>
+																</xs:element>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element ref="LeaseDetails" minOccurs="0"/>
+										<xs:element name="ReferenceTitles" minOccurs="0">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="ReferenceTitle" maxOccurs="unbounded">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="TitleNumber">
+																	<xs:simpleType>
+																		<xs:restriction base="xs:string">
+																			<xs:maxLength value="12"/>
+																		</xs:restriction>
+																	</xs:simpleType>
+																</xs:element>
+																<xs:element name="FormattedTitleNumber">
+																	<xs:simpleType>
+																		<xs:restriction base="xs:string">
+																			<xs:maxLength value="16"/>
+																		</xs:restriction>
+																	</xs:simpleType>
+																</xs:element>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="Owners" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Parties for  DocumentSequenceNumber 0. Will not exist if Owner Info. is not to be returned</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element ref="TenancyGroup" minOccurs="0" maxOccurs="unbounded"/>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element ref="AffectingInstruments" minOccurs="0"/>
+										<xs:element name="Instruments" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Will not exist for 'Front of Title' only. Will always exist for 'Front and Back' even if there are no instruments. Document Sequence Number > 0 only</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="Instrument" minOccurs="0" maxOccurs="unbounded">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="RegistrationNumber">
+																	<xs:simpleType>
+																		<xs:restriction base="xs:string">
+																			<xs:maxLength value="12"/>
+																		</xs:restriction>
+																	</xs:simpleType>
+																</xs:element>
+																<xs:element name="FormattedRegistrationNumber" minOccurs="0">
+																	<xs:simpleType>
+																		<xs:restriction base="xs:string">
+																			<xs:maxLength value="11"/>
+																		</xs:restriction>
+																	</xs:simpleType>
+																</xs:element>
+																<xs:element name="RegistrationDate" type="xs:date" minOccurs="0"/>
+																<xs:element name="DischargeDate" type="xs:date" minOccurs="0"/>
+																<xs:element ref="DocumentType"/>
+																<xs:element name="Value" type="xs:decimal" minOccurs="0"/>
+																<xs:element name="NatureOfInterest" minOccurs="0">
+																	<xs:complexType>
+																		<xs:sequence>
+																			<xs:element name="Type">
+																				<xs:simpleType>
+																					<xs:restriction base="xs:string">
+																						<xs:maxLength value="60"/>
+																					</xs:restriction>
+																				</xs:simpleType>
+																			</xs:element>
+																			<xs:element name="Etc" type="xs:boolean" minOccurs="0">
+																				<xs:annotation>
+																					<xs:documentation>Causes 'etc.' to print after the Nature of Interest text</xs:documentation>
+																				</xs:annotation>
+																			</xs:element>
+																		</xs:sequence>
+																	</xs:complexType>
+																</xs:element>
+																<xs:element ref="LeaseDetails" minOccurs="0"/>
+																<xs:choice minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>These elements come from DocumentGenericData. Can only exist if Document Type is as shown</xs:documentation>
+																	</xs:annotation>
+																	<xs:element name="Wages" type="xs:boolean">
+																		<xs:annotation>
+																			<xs:documentation>Doc Type 'BUIL' </xs:documentation>
+																		</xs:annotation>
+																	</xs:element>
+																	<xs:sequence>
+																		<xs:annotation>
+																			<xs:documentation>Doc Types 'NOSI',  'NOTW'  and "RENN'</xs:documentation>
+																		</xs:annotation>
+																		<xs:choice minOccurs="0">
+																			<xs:annotation>
+																				<xs:documentation>Not on NOTW </xs:documentation>
+																			</xs:annotation>
+																			<xs:element name="ExpiryDate" type="xs:date"/>
+																			<xs:element name="ExpiryDateInfinity" type="xs:boolean">
+																				<xs:annotation>
+																					<xs:documentation>True if 1st 8 chars. of DocumentGenericData = 'INFINITY'</xs:documentation>
+																				</xs:annotation>
+																			</xs:element>
+																			<xs:element name="InvalidExpiryDate">
+																				<xs:annotation>
+																					<xs:documentation>Used if the ExpiryDate is not a valid date</xs:documentation>
+																				</xs:annotation>
+																				<xs:simpleType>
+																					<xs:restriction base="xs:string">
+																						<xs:maxLength value="8"/>
+																					</xs:restriction>
+																				</xs:simpleType>
+																			</xs:element>
+																		</xs:choice>
+																		<xs:element name="SecurityType" minOccurs="0">
+																			<xs:annotation>
+																				<xs:documentation>Not for doc type 'RENN'</xs:documentation>
+																			</xs:annotation>
+																			<xs:simpleType>
+																				<xs:restriction base="xs:string">
+																					<xs:enumeration value="Crops"/>
+																					<xs:enumeration value="Fixtures"/>
+																					<xs:enumeration value="Fixtures and Crops"/>
+																				</xs:restriction>
+																			</xs:simpleType>
+																		</xs:element>
+																	</xs:sequence>
+																	<xs:sequence>
+																		<xs:annotation>
+																			<xs:documentation>Doc Types 'NOTM', 'TFIN' and 'TMIN' (and currently TMIN has no relevant data) </xs:documentation>
+																		</xs:annotation>
+																		<xs:element name="Ranking" minOccurs="0">
+																			<xs:annotation>
+																				<xs:documentation> Doc Type TFIN only</xs:documentation>
+																			</xs:annotation>
+																			<xs:simpleType>
+																				<xs:restriction base="xs:string">
+																					<xs:enumeration value="Deferred"/>
+																					<xs:enumeration value="Equal"/>
+																					<xs:enumeration value="Prior"/>
+																				</xs:restriction>
+																			</xs:simpleType>
+																		</xs:element>
+																		<xs:element name="Partial" type="xs:boolean" minOccurs="0">
+																			<xs:annotation>
+																				<xs:documentation>True if 2nd char. of DocumentGenericData = 'Y' </xs:documentation>
+																			</xs:annotation>
+																		</xs:element>
+																	</xs:sequence>
+																</xs:choice>
+																<xs:element name="InstrumentParties">
+																	<xs:complexType>
+																		<xs:sequence>
+																			<xs:element ref="TenancyGroup" minOccurs="0" maxOccurs="unbounded"/>
+																		</xs:sequence>
+																	</xs:complexType>
+																</xs:element>
+																<xs:element name="DocumentSpecificParticulars" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>Does not include records with  ParticularsType = 'R'</xs:documentation>
+																	</xs:annotation>
+																	<xs:complexType>
+																		<xs:sequence>
+																			<xs:element name="TextLine" type="xs:string" maxOccurs="unbounded"/>
+																		</xs:sequence>
+																	</xs:complexType>
+																</xs:element>
+																<xs:element name="TitleSpecificParticulars" minOccurs="0">
+																	<xs:complexType>
+																		<xs:sequence>
+																			<xs:element name="TextLine" type="xs:string" maxOccurs="unbounded"/>
+																		</xs:sequence>
+																	</xs:complexType>
+																</xs:element>
+																<xs:element name="AffectedItems" minOccurs="0">
+																	<xs:complexType>
+																		<xs:sequence>
+																			<xs:element name="AffectedItem" maxOccurs="unbounded">
+																				<xs:complexType>
+																					<xs:sequence>
+																						<xs:choice>
+																							<xs:element name="Document">
+																								<xs:complexType>
+																									<xs:sequence>
+																										<xs:element name="RegistrationNumber">
+																											<xs:simpleType>
+																												<xs:restriction base="xs:string">
+																													<xs:maxLength value="12"/>
+																												</xs:restriction>
+																											</xs:simpleType>
+																										</xs:element>
+																										<xs:element name="PostponmentType" minOccurs="0">
+																											<xs:simpleType>
+																												<xs:restriction base="xs:string">
+																													<xs:maxLength value="2"/>
+																													<xs:enumeration value="Of"/>
+																													<xs:enumeration value="To"/>
+																												</xs:restriction>
+																											</xs:simpleType>
+																										</xs:element>
+																										<xs:element name="Discharged" type="xs:boolean" minOccurs="0"/>
+																										<xs:element ref="DocumentType"/>
+																									</xs:sequence>
+																								</xs:complexType>
+																							</xs:element>
+																							<xs:element name="Plan">
+																								<xs:complexType>
+																									<xs:sequence>
+																										<xs:element name="PlanNumber">
+																											<xs:simpleType>
+																												<xs:restriction base="xs:string">
+																													<xs:maxLength value="7"/>
+																												</xs:restriction>
+																											</xs:simpleType>
+																										</xs:element>
+																									</xs:sequence>
+																								</xs:complexType>
+																							</xs:element>
+																							<xs:element name="Parcel">
+																								<xs:complexType>
+																									<xs:sequence>
+																										<xs:element name="LINCNumber">
+																											<xs:simpleType>
+																												<xs:restriction base="xs:string">
+																													<xs:maxLength value="10"/>
+																												</xs:restriction>
+																											</xs:simpleType>
+																										</xs:element>
+																										<xs:element name="ShortLegalType">
+																											<xs:simpleType>
+																												<xs:restriction base="xs:string">
+																													<xs:length value="3"/>
+																													<xs:enumeration value="ATS"/>
+																													<xs:enumeration value="PBL"/>
+																												</xs:restriction>
+																											</xs:simpleType>
+																										</xs:element>
+																										<xs:element name="ShortLegal">
+																											<xs:simpleType>
+																												<xs:restriction base="xs:string">
+																													<xs:maxLength value="40"/>
+																												</xs:restriction>
+																											</xs:simpleType>
+																										</xs:element>
+																										<xs:element name="PartialCancelled" type="xs:boolean" minOccurs="0">
+																											<xs:annotation>
+																												<xs:documentation>True if AffectedParcelTextType = 'P'</xs:documentation>
+																											</xs:annotation>
+																										</xs:element>
+																									</xs:sequence>
+																								</xs:complexType>
+																							</xs:element>
+																							<xs:element name="Party">
+																								<xs:complexType>
+																									<xs:sequence>
+																										<xs:element name="Name">
+																											<xs:simpleType>
+																												<xs:restriction base="xs:string">
+																													<xs:maxLength value="3000"/>
+																												</xs:restriction>
+																											</xs:simpleType>
+																										</xs:element>
+																										<xs:element name="Alias" type="xs:boolean" minOccurs="0">
+																											<xs:annotation>
+																												<xs:documentation>Shows the party as 'also known as'  </xs:documentation>
+																											</xs:annotation>
+																										</xs:element>
+																										<xs:element name="Occupation" minOccurs="0">
+																											<xs:simpleType>
+																												<xs:restriction base="xs:string">
+																													<xs:maxLength value="40"/>
+																												</xs:restriction>
+																											</xs:simpleType>
+																										</xs:element>
+																										<xs:element name="Type">
+																											<xs:simpleType>
+																												<xs:restriction base="xs:string">
+																													<xs:maxLength value="10"/>
+																													<xs:enumeration value="Company"/>
+																													<xs:enumeration value="Individual"/>
+																												</xs:restriction>
+																											</xs:simpleType>
+																										</xs:element>
+																									</xs:sequence>
+																								</xs:complexType>
+																							</xs:element>
+																						</xs:choice>
+																					</xs:sequence>
+																				</xs:complexType>
+																			</xs:element>
+																		</xs:sequence>
+																	</xs:complexType>
+																</xs:element>
+																<xs:element ref="AffectingInstruments" minOccurs="0"/>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+									<xs:attribute name="EffectiveDateTime" type="xs:dateTime">
+										<xs:annotation>
+											<xs:documentation>The latest date and time that the information in the title is up-to-date for. Same as the date at the end of the certified title</xs:documentation>
+										</xs:annotation>
+									</xs:attribute>
+									<xs:attribute name="LastChangeDate" type="xs:date">
+										<xs:annotation>
+											<xs:documentation>The date that the title last changed. Same as the 'Change/Cancel Date' in the search results screen.  </xs:documentation>
+										</xs:annotation>
+									</xs:attribute>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="TenancyGroup">
+		<xs:annotation>
+			<xs:documentation>Contains the components for the parties on a title - the elements common to a tenancy group and details of each party within each tenancy group</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="TenancyType" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="13"/>
+							<xs:enumeration value="Common"/>
+							<xs:enumeration value="Joint Tenants"/>
+							<xs:enumeration value="Joint Account"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Interest" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Parties">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Party" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Name">
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:maxLength value="600"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="Aliases" minOccurs="0">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="Alias" maxOccurs="unbounded">
+														<xs:simpleType>
+															<xs:restriction base="xs:string">
+																<xs:maxLength value="600"/>
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="Occupation" minOccurs="0">
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:maxLength value="40"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="Address" minOccurs="0">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="StreetAndCity" minOccurs="0">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="AddressLine" type="xs:string" maxOccurs="unbounded"/>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="Province" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Canadian Provinces and Territories only - US States etc. are currently held in 'StreetAndCity' </xs:documentation>
+														</xs:annotation>
+														<xs:simpleType>
+															<xs:restriction base="xs:string">
+																<xs:maxLength value="25"/>
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:element>
+													<xs:element name="PostalCode" minOccurs="0">
+														<xs:simpleType>
+															<xs:restriction base="xs:string">
+																<xs:maxLength value="9"/>
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="Type">
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:maxLength value="10"/>
+													<xs:enumeration value="Company"/>
+													<xs:enumeration value="Individual"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="Role" minOccurs="0">
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:maxLength value="12"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="Representative" minOccurs="0">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="Type">
+														<xs:simpleType>
+															<xs:restriction base="xs:string">
+																<xs:maxLength value="20"/>
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:element>
+													<xs:element name="Text">
+														<xs:simpleType>
+															<xs:restriction base="xs:string">
+																<xs:maxLength value="600"/>
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="LeaseDetails">
+		<xs:annotation>
+			<xs:documentation>Contains the lease details for a document, when the document type signifies a lease (many document types)</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="CommencementDate" type="xs:date" minOccurs="0"/>
+				<xs:element name="TerminationDate" type="xs:date" minOccurs="0"/>
+				<xs:element name="TermYears" type="xs:integer" minOccurs="0"/>
+				<xs:element name="TermMonths" type="xs:integer" minOccurs="0"/>
+				<xs:element name="TermDays" type="xs:integer" minOccurs="0"/>
+				<xs:element name="LeaseText" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="60"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="DocumentType">
+		<xs:annotation>
+			<xs:documentation>Contains the elements for a Document Type </xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Code">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="4"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Name">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="30"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="PrintText" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="60"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="AffectingInstruments">
+		<xs:annotation>
+			<xs:documentation>Contains the elements for the various types of Affecting Instrument</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Document" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="RegistrationNumber">
+								<xs:simpleType>
+									<xs:restriction base="xs:string">
+										<xs:maxLength value="12"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element ref="DocumentType"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>
+ 

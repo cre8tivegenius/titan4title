@@ -1,0 +1,88 @@
+{
+  "template_id": "alberta_title_v1",
+  "version": "1.0.0",
+  "page": {
+    "width": 612,
+    "height": 792,
+    "margins": {
+      "l": 36,
+      "r": 36,
+      "t": 36,
+      "b": 36
+    }
+  },
+  "elements": [
+    {
+      "type": "StaticText",
+      "text": "CERTIFICATE OF TITLE",
+      "x": 72,
+      "y": 72,
+      "font": "Times-Roman",
+      "size": 12
+    },
+    {
+      "type": "DynamicText",
+      "binding": "string(/Title/TitleNumber)",
+      "x": 540,
+      "y": 72,
+      "font": "Times-Roman",
+      "size": 12,
+      "align": "right"
+    },
+    {
+      "type": "Rule",
+      "x1": 72,
+      "y1": 84,
+      "x2": 540,
+      "y2": 84,
+      "width": 0.5
+    },
+    {
+      "type": "StaticText",
+      "text": "OWNERS",
+      "x": 72,
+      "y": 110,
+      "font": "Helvetica-Bold",
+      "size": 10
+    },
+    {
+      "type": "StaticText",
+      "text": "ENCUMBRANCES",
+      "x": 72,
+      "y": 300,
+      "font": "Helvetica-Bold",
+      "size": 10
+    },
+    {
+      "type": "RepeatingTable",
+      "binding": "/Title/Instruments/Instrument",
+      "x": 72,
+      "y": 320,
+      "row_height": 12,
+      "header_font": "Helvetica-Bold",
+      "row_font": "Helvetica",
+      "columns": [
+        {
+          "header": "Instr No.",
+          "binding": "@number",
+          "width": 100
+        },
+        {
+          "header": "Type",
+          "binding": "@type",
+          "width": 150
+        },
+        {
+          "header": "Date",
+          "binding": "@date",
+          "width": 80
+        },
+        {
+          "header": "Remarks",
+          "binding": "string(./Remarks)",
+          "width": 160
+        }
+      ]
+    }
+  ]
+}

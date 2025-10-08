@@ -1,0 +1,12 @@
+fastapi>=0.111
+uvicorn[standard]>=0.29
+lxml>=5.2
+xmlschema>=3.2
+reportlab>=4.2
+pymupdf>=1.24
+pdfminer.six>=20220524
+pydantic>=2.8
+python-multipart>=0.0.9
+qrcode[pil]>=7.4
+Pillow>=10.3
+typer>=0.12.3
