@@ -4,7 +4,36 @@ Production-ready pipeline for generating deterministic Alberta (SPIN 2) land tit
 fixed-width ASCII exports or prior PDFs, produces canonical XML validated against the official XSD, and renders
 pixel-positioned PDF/A-2b output from a JSON template.
 
+## Installation
+
+1. **Clone the repository** (using your desired folder name, e.g. `titan4title`).
+   ```bash
+   git clone https://github.com/your-org/titan4title.git
+   ```
+2. **Bootstrap the environment** by running the installation helper from the parent directory or the project root.
+   ```bash
+   ./install_titan4title.sh
+   # or the /runinstall alias
+   ```
+   This script provisions `.venv/`, installs Python dependencies, and downloads the required domain assets:
+   - `app/data/xsd/spin2_title_result.xsd`
+   - `app/assets/icc/sRGB.icc`
+
+3. **Activate the virtual environment** when you want to work locally.
+   ```bash
+   source .venv/bin/activate
+   ```
+
+4. **Start the API** (directly or via Docker, depending on your deployment target).
+   ```bash
+   uvicorn app.main:app --host 0.0.0.0 --port 8000
+   # or docker compose up --build
+   ```
+   FastAPI docs will be available at <http://localhost:8000/docs>.
+
 ## Environment & setup
+
+*The installation helper handles these steps automatically; use this section when provisioning manually or in constrained environments.*
 
 1. **Python environment**
    ```bash

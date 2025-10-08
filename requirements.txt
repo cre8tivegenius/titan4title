@@ -6,6 +6,7 @@ reportlab>=4.2
 pymupdf>=1.24
 pdfminer.six>=20220524
 pydantic>=2.8
+PyYAML>=6.0
 python-multipart>=0.0.9
 qrcode[pil]>=7.4
 Pillow>=10.3
