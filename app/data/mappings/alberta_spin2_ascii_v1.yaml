@@ -1,21 +1,190 @@
-version: "alberta_spin2_ascii_v1"
-records:
-  - id: TITLE_HEADER
-    match: { type_at: 1, equals: "TH" }
-    fields:
-      title_number: { start: 3, len: 12 }
-      linc: { start: 15, len: 10 }
-      issue_date: { start: 26, len: 8, parse: { date: "YYYYMMDD" } }
-  - id: OWNER
-    match: { type_at: 1, equals: "OW" }
-    fields:
-      sequence: { start: 3, len: 3, int: true }
-      name: { start: 6, len: 60, trim: true }
-      type: { start: 66, len: 10 }
-  - id: INSTRUMENT
-    match: { type_at: 1, equals: "IN" }
-    fields:
-      number:  { start: 3, len: 12 }
-      i_type:  { start: 15, len: 20 }
-      date:    { start: 35, len: 8, parse: { date: "YYYYMMDD" } }
-      remarks: { start: 43, len: 80 }
+{
+  "version": "alberta_spin2_ascii_v1",
+  "defaults": {
+    "title_type": "Title",
+    "rights_type": "Surface",
+    "consolidated": false
+  },
+  "records": [
+    {
+      "id": "TITLE_HEADER",
+      "match": {"type_at": 1, "equals": "TH"},
+      "fields": {
+        "title_number": {"start": 3, "len": 12},
+        "formatted_title_number": {
+          "start": 3,
+          "len": 12,
+          "transforms": ["digits", {"format": "title_number_groups"}]
+        },
+        "rights_type": {
+          "start": 15,
+          "len": 1,
+          "transforms": [
+            "uppercase",
+            {"map": {"S": "Surface", "M": "Mineral", "B": "Both"}}
+          ],
+          "default": "Surface"
+        },
+        "consolidated_flag": {
+          "start": 16,
+          "len": 1,
+          "transforms": ["uppercase", {"map": {"Y": true, "N": false}}],
+          "default": false
+        },
+        "create_date": {"start": 17, "len": 8, "transforms": [{"date": "%Y%m%d"}]},
+        "registration_date": {"start": 17, "len": 8, "transforms": [{"date": "%Y%m%d"}]},
+        "document_number": {"start": 25, "len": 12},
+        "document_type_code": {"start": 37, "len": 4, "transforms": ["uppercase"]},
+        "document_type_name": {
+          "start": 41,
+          "len": 30,
+          "transforms": ["normalize_spaces", "titlecase"]
+        },
+        "document_type_print_text": {
+          "start": 41,
+          "len": 30,
+          "transforms": ["normalize_spaces", "titlecase"]
+        },
+        "order_number": {
+          "start": 71,
+          "len": 10,
+          "transforms": ["digits", "int"]
+        },
+        "municipality_code": {"start": 81, "len": 4},
+        "municipality_name": {
+          "start": 85,
+          "len": 30,
+          "transforms": ["normalize_spaces", "titlecase"]
+        },
+        "estate": {
+          "start": 115,
+          "len": 12,
+          "transforms": ["normalize_spaces", "titlecase"]
+        }
+      }
+    },
+    {
+      "id": "PARCEL",
+      "match": {"type_at": 1, "equals": "PL"},
+      "fields": {
+        "sequence": {"start": 3, "len": 3, "transforms": ["digits", "int"]},
+        "linc_number": {"start": 6, "len": 10, "transforms": ["digits"]},
+        "short_legal_type": {
+          "start": 16,
+          "len": 3,
+          "transforms": ["uppercase"],
+          "default": "ATS"
+        },
+        "short_legal": {
+          "start": 19,
+          "len": 60,
+          "transforms": ["rstrip", "normalize_spaces"]
+        }
+      }
+    },
+    {
+      "id": "LEGAL_LINE",
+      "match": {"type_at": 1, "equals": "LG"},
+      "fields": {
+        "text": {"start": 3, "len": 80, "transforms": ["rstrip"]}
+      }
+    },
+    {
+      "id": "RIGHTS_LINE",
+      "match": {"type_at": 1, "equals": "RG"},
+      "fields": {
+        "text": {"start": 3, "len": 80, "transforms": ["rstrip"]}
+      }
+    },
+    {
+      "id": "OWNER",
+      "match": {"type_at": 1, "equals": "OW"},
+      "fields": {
+        "sequence": {"start": 3, "len": 3, "transforms": ["digits", "int"]},
+        "name": {
+          "start": 6,
+          "len": 60,
+          "transforms": ["rstrip", "normalize_spaces"]
+        },
+        "party_type": {
+          "start": 66,
+          "len": 1,
+          "transforms": [
+            "uppercase",
+            {"map": {"I": "Individual", "C": "Company"}}
+          ],
+          "default": "Individual"
+        },
+        "tenancy": {
+          "start": 67,
+          "len": 4,
+          "transforms": [
+            "uppercase",
+            {"map": {"JT": "Joint Tenants", "CM": "Common", "JA": "Joint Account"}, "default": "Common"}
+          ]
+        },
+        "interest": {"start": 71, "len": 10, "transforms": ["normalize_spaces"]},
+        "occupation": {"start": 81, "len": 20, "transforms": ["normalize_spaces"]},
+        "role": {"start": 101, "len": 12, "transforms": ["normalize_spaces"]}
+      }
+    },
+    {
+      "id": "OWNER_ALIAS",
+      "match": {"type_at": 1, "equals": "OX"},
+      "fields": {
+        "alias": {"start": 3, "len": 60, "transforms": ["normalize_spaces"]}
+      }
+    },
+    {
+      "id": "OWNER_ADDRESS",
+      "match": {"type_at": 1, "equals": "OA"},
+      "fields": {
+        "address_line": {"start": 3, "len": 60, "transforms": ["rstrip"]},
+        "province": {
+          "start": 63,
+          "len": 20,
+          "transforms": ["normalize_spaces", "titlecase"]
+        },
+        "postal_code": {
+          "start": 83,
+          "len": 10,
+          "transforms": ["normalize_spaces", "uppercase"]
+        }
+      }
+    },
+    {
+      "id": "INSTRUMENT",
+      "match": {"type_at": 1, "equals": "IN"},
+      "fields": {
+        "registration_number": {"start": 3, "len": 12, "transforms": ["digits"]},
+        "formatted_registration_number": {
+          "start": 3,
+          "len": 12,
+          "transforms": ["digits", {"format": "registration_number"}]
+        },
+        "registration_date": {"start": 16, "len": 8, "transforms": [{"date": "%Y%m%d"}]},
+        "document_type_code": {"start": 25, "len": 4, "transforms": ["uppercase"]},
+        "document_type_name": {
+          "start": 30,
+          "len": 30,
+          "transforms": ["normalize_spaces", "titlecase"]
+        },
+        "remarks": {"start": 60, "len": 60, "transforms": ["rstrip"]}
+      }
+    },
+    {
+      "id": "INSTRUMENT_REMARK",
+      "match": {"type_at": 1, "equals": "IR"},
+      "fields": {
+        "text": {"start": 3, "len": 60, "transforms": ["rstrip"]}
+      }
+    },
+    {
+      "id": "MUNICIPAL_ADDRESS",
+      "match": {"type_at": 1, "equals": "MA"},
+      "fields": {
+        "address_line": {"start": 3, "len": 60, "transforms": ["rstrip"]}
+      }
+    }
+  ]
+}

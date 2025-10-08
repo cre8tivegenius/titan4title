@@ -20,6 +20,7 @@ paths:
                   format: binary
                 ascii_text:
                   type: string
+                  example: "TH123456789012S20240201DOC000012345TFRSALBT00012345EDM0CITY OF EDMONTON\n"
       responses:
         '200':
           description: Parsed XML
@@ -30,6 +31,11 @@ paths:
                 properties:
                   xml:
                     type: string
+               examples:
+                 sample:
+                   summary: Canonical XML output
+                   value:
+                     xml: "<ProductTitleResult>\n  <Order>\n    <OrderNumber>123456</OrderNumber>\n  </Order>\n  <TitleData>\n    <Title>...</Title>\n  </TitleData>\n</ProductTitleResult>"
   /v1/validate:
     post:
       summary: Validate canonical XML against SPIN 2 XSD
@@ -43,6 +49,7 @@ paths:
               properties:
                 xml:
                   type: string
+                  example: "<ProductTitleResult>...</ProductTitleResult>"
       responses:
         '200':
           description: Validation result
@@ -61,6 +68,20 @@ paths:
                         message: { type: string }
                         line: { type: integer, nullable: true }
                         column: { type: integer, nullable: true }
+               examples:
+                 success:
+                   summary: Valid document
+                   value:
+                     ok: true
+                     errors: []
+                 failure:
+                   summary: Invalid document
+                   value:
+                     ok: false
+                     errors:
+                       - message: "Element 'TitleNumber': [facet 'maxLength']"
+                         line: 4
+                         column: 24
   /v1/ingest-pdf:
     post:
       summary: Ingest prior title PDF to produce XML candidates (backfill)
@@ -89,6 +110,13 @@ paths:
                   confidence:
                     type: number
                     format: float
+               examples:
+                 extracted:
+                   summary: Candidate derived from prior PDF
+                   value:
+                     xml_candidates:
+                       - "<ProductTitleResult>...</ProductTitleResult>"
+                     confidence: 0.72
   /v1/render:
     post:
       summary: Render canonical XML to pixel-perfect PDF
@@ -111,6 +139,14 @@ paths:
                     pdfa:
                       type: boolean
                       default: true
+             examples:
+               default:
+                 summary: Render sample XML
+                 value:
+                   xml: "<ProductTitleResult>...</ProductTitleResult>"
+                   template_id: alberta_title_v1
+                   options:
+                     pdfa: true
       responses:
         '200':
           description: Rendered PDF
@@ -163,3 +199,18 @@ paths:
                       properties:
                         template_id: { type: string }
                         version: { type: string }
+                         page:
+                           type: object
+                         modified_at: { type: string }
+               examples:
+                 listing:
+                   summary: Available templates
+                   value:
+                     templates:
+                       - template_id: alberta_title_v1
+                         version: 1.1.0
+                         page:
+                           width: 612
+                           height: 792
+                           margins: {l: 36, r: 36, t: 48, b: 48}
+                         modified_at: "2024-01-01T00:00:00Z"

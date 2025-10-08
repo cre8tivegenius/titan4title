@@ -1,88 +1,143 @@
 {
   "template_id": "alberta_title_v1",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "page": {
     "width": 612,
     "height": 792,
-    "margins": {
-      "l": 36,
-      "r": 36,
-      "t": 36,
-      "b": 36
-    }
+    "margins": { "l": 36, "r": 36, "t": 48, "b": 48 },
+    "baseline": { "leading": 12, "offset": 60 },
+    "qr": { "enabled": true, "size": 65, "margin_x": 90, "margin_y": 48 }
   },
   "elements": [
     {
+      "type": "Image",
+      "path": "app/assets/images/crest.png",
+      "x": 270,
+      "y": 36,
+      "width": 72,
+      "height": 72
+    },
+    {
       "type": "StaticText",
-      "text": "CERTIFICATE OF TITLE",
-      "x": 72,
-      "y": 72,
-      "font": "Times-Roman",
+      "text": "ALBERTA LAND TITLES",
+      "x": 36,
+      "y": 54,
+      "font": "BodySansBold",
       "size": 12
     },
     {
-      "type": "DynamicText",
-      "binding": "string(/Title/TitleNumber)",
-      "x": 540,
-      "y": 72,
-      "font": "Times-Roman",
-      "size": 12,
-      "align": "right"
+      "type": "StaticText",
+      "text": "CERTIFICATE OF TITLE",
+      "x": 306,
+      "y": 54,
+      "font": "BodySerifBold",
+      "size": 14,
+      "align": "center"
     },
     {
       "type": "Rule",
-      "x1": 72,
-      "y1": 84,
-      "x2": 540,
-      "y2": 84,
-      "width": 0.5
+      "x1": 36,
+      "y1": 72,
+      "x2": 576,
+      "y2": 72,
+      "width": 1
+    },
+    {
+      "type": "TextBox",
+      "binding": "concat('Title Number: ', /ProductTitleResult/TitleData/Title[1]/TitleNumber, '\n', 'Formatted: ', /ProductTitleResult/TitleData/Title[1]/FormattedTitleNumber, '\n', 'LINC Number: ', /ProductTitleResult/TitleData/Title[1]/Parcels/Parcel[1]/LINCNumber)",
+      "x": 36,
+      "y": 84,
+      "width": 260,
+      "height": 72,
+      "font": "BodySans",
+      "size": 10,
+      "leading": 12,
+      "ellipsis": false
+    },
+    {
+      "type": "TextBox",
+      "binding": "concat('Rights Type: ', /ProductTitleResult/TitleData/Title[1]/RightsType, '\n', 'Estate: ', /ProductTitleResult/TitleData/Title[1]/Estate, '\n', 'Municipality: ', /ProductTitleResult/TitleData/Title[1]/Municipality/Name)",
+      "x": 310,
+      "y": 84,
+      "width": 266,
+      "height": 72,
+      "font": "BodySans",
+      "size": 10,
+      "leading": 12,
+      "ellipsis": false
     },
     {
       "type": "StaticText",
-      "text": "OWNERS",
-      "x": 72,
-      "y": 110,
-      "font": "Helvetica-Bold",
-      "size": 10
+      "text": "Legal Description",
+      "x": 36,
+      "y": 170,
+      "font": "BodySansBold",
+      "size": 11
+    },
+    {
+      "type": "TextBox",
+      "binding": "concat(/ProductTitleResult/TitleData/Title[1]/Parcels/Parcel[1]/ShortLegal, '\n', /ProductTitleResult/TitleData/Title[1]/Parcels/Parcel[1]/LegalText/TextLine[1])",
+      "x": 36,
+      "y": 182,
+      "width": 540,
+      "height": 72,
+      "font": "BodySerif",
+      "size": 10,
+      "leading": 12,
+      "ellipsis": true
     },
     {
       "type": "StaticText",
-      "text": "ENCUMBRANCES",
-      "x": 72,
-      "y": 300,
-      "font": "Helvetica-Bold",
-      "size": 10
+      "text": "Registered Owners",
+      "x": 36,
+      "y": 270,
+      "font": "BodySansBold",
+      "size": 11
     },
     {
       "type": "RepeatingTable",
-      "binding": "/Title/Instruments/Instrument",
-      "x": 72,
-      "y": 320,
-      "row_height": 12,
-      "header_font": "Helvetica-Bold",
-      "row_font": "Helvetica",
+      "binding": "/ProductTitleResult/TitleData/Title[1]/Owners/TenancyGroup/Parties/Party",
+      "x": 36,
+      "y": 288,
       "columns": [
-        {
-          "header": "Instr No.",
-          "binding": "@number",
-          "width": 100
-        },
-        {
-          "header": "Type",
-          "binding": "@type",
-          "width": 150
-        },
-        {
-          "header": "Date",
-          "binding": "@date",
-          "width": 80
-        },
-        {
-          "header": "Remarks",
-          "binding": "string(./Remarks)",
-          "width": 160
-        }
-      ]
+        {"header": "Owner", "binding": "./Name", "width": 260},
+        {"header": "Type", "binding": "./Type", "width": 80},
+        {"header": "Interest", "binding": "../../Interest", "width": 80},
+        {"header": "Tenancy", "binding": "../../TenancyType", "width": 100}
+      ],
+      "header_font": "BodySansBold",
+      "row_font": "BodySans",
+      "header_size": 10,
+      "row_size": 9,
+      "row_leading": 11,
+      "header_gap": 6
+    },
+    {
+      "type": "StaticText",
+      "text": "Encumbrances / Instruments",
+      "x": 36,
+      "y": 384,
+      "font": "BodySansBold",
+      "size": 11
+    },
+    {
+      "type": "RepeatingTable",
+      "binding": "/ProductTitleResult/TitleData/Title[1]/Instruments/Instrument",
+      "x": 36,
+      "y": 402,
+      "columns": [
+        {"header": "Registration", "binding": "./RegistrationNumber", "width": 120},
+        {"header": "Date", "binding": "./RegistrationDate", "width": 80},
+        {"header": "Type", "binding": "./DocumentType/Name", "width": 130},
+        {"header": "Remarks", "binding": "./DocumentType/PrintText", "width": 180}
+      ],
+      "header_font": "BodySansBold",
+      "row_font": "BodySans",
+      "header_size": 10,
+      "row_size": 9,
+      "row_leading": 11,
+      "header_gap": 6,
+      "padding": { "top": 2, "bottom": 2, "left": 2, "right": 2 }
     }
   ]
 }

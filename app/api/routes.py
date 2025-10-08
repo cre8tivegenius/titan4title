@@ -1,16 +1,23 @@
-from fastapi import APIRouter, UploadFile, File, Form, HTTPException
+import glob
+import io
+import json
+import os
+from datetime import datetime
+from pathlib import Path
+from typing import Any, Dict, Optional
+
+from fastapi import APIRouter, File, Form, HTTPException, UploadFile
 from fastapi.responses import StreamingResponse
-from pydantic import BaseModel
-from typing import Optional
-from app.services import ascii_parser, xml_validator, pdf_ingest, renderer, title_numbers, template_engine
-import io, json, os, glob
+from pydantic import BaseModel, Field
+
+from app.services import ascii_parser, pdf_ingest, renderer, title_numbers, xml_validator
 
 router = APIRouter()
 
 class XMLBody(BaseModel):
     xml: str
     template_id: Optional[str] = "alberta_title_v1"
-    options: Optional[dict] = {"pdfa": True}
+    options: Dict[str, Any] = Field(default_factory=lambda: {"pdfa": True})
 
 @router.get("/templates")
 async def list_templates():
@@ -18,10 +25,18 @@ async def list_templates():
     items = []
     for p in paths:
         try:
-            data = json.load(open(p, "r"))
-            items.append({"template_id": data.get("template_id"), "version": data.get("version")})
+            data = json.loads(Path(p).read_text(encoding="utf-8"))
+            stat = os.stat(p)
+            items.append(
+                {
+                    "template_id": data.get("template_id", Path(p).stem),
+                    "version": data.get("version"),
+                    "page": data.get("page", {}),
+                    "modified_at": datetime.utcfromtimestamp(stat.st_mtime).isoformat() + "Z",
+                }
+            )
         except Exception:
-            pass
+            continue
     return {"templates": items}
 
 @router.post("/parse-ascii")

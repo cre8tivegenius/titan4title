@@ -1,0 +1,7 @@
+{
+  "BodySerif": {"builtin": "Times-Roman"},
+  "BodySerifBold": {"builtin": "Times-Bold"},
+  "BodySans": {"builtin": "Helvetica"},
+  "BodySansBold": {"builtin": "Helvetica-Bold"},
+  "FooterMono": {"builtin": "Courier"}
+}

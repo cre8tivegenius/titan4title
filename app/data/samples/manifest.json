@@ -1,0 +1,10 @@
+{
+  "cases": [
+    {
+      "id": "sample-001",
+      "xml": "app/data/samples/sample.xml",
+      "xml_sha256": "7b5de9c5930afe3a1a98671c28697aa289f39a74a8269071122dedf39604e6f5",
+      "pdf_sha256": null
+    }
+  ]
+}

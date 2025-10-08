@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ProductTitleResult>
+  <Order>
+    <OrderNumber>123456</OrderNumber>
+  </Order>
+  <TitleData>
+    <Title>
+      <TitleNumber>123456789012</TitleNumber>
+      <FormattedTitleNumber>123 456 789 012</FormattedTitleNumber>
+      <Type>Title</Type>
+      <RightsType>Surface</RightsType>
+      <Consolidated>false</Consolidated>
+      <CreateDate>2024-02-01</CreateDate>
+      <ShortLegalDescription>LOT 1 BLOCK 2 PLAN 2314KS</ShortLegalDescription>
+      <Estate>Fee Simple</Estate>
+      <Municipality>
+        <Code>EDM0</Code>
+        <Name>City of Edmonton</Name>
+      </Municipality>
+      <RegistrationDetails>
+        <DocumentNumber>DOC000012345</DocumentNumber>
+        <Date>2024-02-01</Date>
+        <DocumentType>
+          <Code>TFRS</Code>
+          <Name>Transfer of Land</Name>
+        </DocumentType>
+      </RegistrationDetails>
+      <Parcels>
+        <Parcel>
+          <LINCNumber>0034567890</LINCNumber>
+          <ShortLegalType>ATS</ShortLegalType>
+          <ShortLegal>LOT 1 BLOCK 2 PLAN 2314KS</ShortLegal>
+          <LegalText>
+            <TextLine>MERIDIAN 4 RANGE 24 TOWNSHIP 52 SECTION 23</TextLine>
+            <TextLine>ALL THAT PORTION SHOWN ON PLAN 2314KS</TextLine>
+          </LegalText>
+        </Parcel>
+      </Parcels>
+      <Owners>
+        <TenancyGroup>
+          <TenancyType>Joint Tenants</TenancyType>
+          <Interest>1/2</Interest>
+          <Parties>
+            <Party>
+              <Name>DOE JOHN A</Name>
+              <Type>Individual</Type>
+            </Party>
+            <Party>
+              <Name>DOE JANE B</Name>
+              <Type>Individual</Type>
+            </Party>
+          </Parties>
+        </TenancyGroup>
+        <TenancyGroup>
+          <TenancyType>Common</TenancyType>
+          <Interest>1/2</Interest>
+          <Parties>
+            <Party>
+              <Name>ACME HOLDINGS INC.</Name>
+              <Type>Company</Type>
+            </Party>
+          </Parties>
+        </TenancyGroup>
+      </Owners>
+      <Instruments>
+        <Instrument>
+          <RegistrationNumber>202312345678</RegistrationNumber>
+          <RegistrationDate>2024-02-01</RegistrationDate>
+          <DocumentType>
+            <Code>MORT</Code>
+            <Name>Mortgage</Name>
+            <PrintText>Mortgage to Big Bank</PrintText>
+          </DocumentType>
+        </Instrument>
+        <Instrument>
+          <RegistrationNumber>202312345679</RegistrationNumber>
+          <RegistrationDate>2024-05-12</RegistrationDate>
+          <DocumentType>
+            <Code>ASGN</Code>
+            <Name>Assignment</Name>
+            <PrintText>Assigned to ACME Holdings</PrintText>
+          </DocumentType>
+        </Instrument>
+      </Instruments>
+    </Title>
+  </TitleData>
+</ProductTitleResult>
