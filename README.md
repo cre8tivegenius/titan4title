@@ -110,10 +110,82 @@ The renderer honours aliases defined in `app/assets/fonts/fontmap.json` and embe
 | `POST /v1/validate`   | Schema validation with detailed errors |
 | `POST /v1/ingest-pdf` | Extract best-effort XML candidates from prior PDFs |
 | `POST /v1/render`     | Render XML to PDF/PDF-A using selected template |
+| `POST /v1/new-title-request` | Generate canonical XML + PDF for a new purchase |
 | `POST /v1/reserve-title-number` | Deterministic title number reservation strategies |
 | `GET /v1/templates`   | Enumerate templates with page metadata |
 
 Refer to `openapi.yaml` or `/docs` for complete request/response examples.
+
+## New title request endpoint
+
+`POST /v1/new-title-request` constructs a fresh `ProductTitleResult` document from structured purchase details, validates
+the XML against the SPIN 2 schema, and streams back a PDF/A-2b certificate rendered with `alberta_title_v1`.
+
+Minimum payload fields:
+- `reference_number` – unique client or workflow reference (mapped to `<OrderNumber>`)
+- `buyer_name` – registered owner to appear on title
+- `purchase_price` – numeric (two decimal places) used for consideration/value
+- `purchase_date` – ISO date (`YYYY-MM-DD`) recorded as create/registration date
+- `legal_description` – parcel description (first line becomes the short legal)
+- `municipality` – municipality name (code derived automatically unless supplied)
+
+Optional fields allow you to override derived identifiers (`title_number`, `registration_number`, `linc_number`), estate/rights
+metadata, tenancy, template/options, or supply explicit tenancy groups via `owner_groups` when more than one registered owner is involved.
+
+```bash
+curl -X POST http://localhost:8000/v1/new-title-request \
+  -H 'Content-Type: application/json' \
+  --output andre-lacroix-title.pdf \
+  -d '{
+    "reference_number": "REQ-2025-1001",
+    "buyer_name": "Andre Yves Lacroix",
+    "purchase_price": "650000.00",
+    "purchase_date": "2025-10-08",
+    "legal_description": "PLAN 0723943 BLOCK 86 LOT 31 EXCEPTING THEREOUT ALL MINES AND MINERALS",
+    "municipality": "CITY OF EDMONTON",
+    "owner_groups": [
+      {
+        "tenancy_type": "Joint Tenants",
+        "interest": "100%",
+        "parties": [
+          {"name": "Andre Yves Lacroix"},
+          {"name": "Marie-Claude Bouchard"}
+        ]
+      }
+    ]
+  }'
+```
+
+Python example:
+
+```python
+import requests
+
+payload = {
+    "reference_number": "REQ-2025-1001",
+    "buyer_name": "Andre Yves Lacroix",
+    "purchase_price": "650000.00",
+    "purchase_date": "2025-10-08",
+    "legal_description": "PLAN 0723943 BLOCK 86 LOT 31 EXCEPTING THEREOUT ALL MINES AND MINERALS",
+    "municipality": "CITY OF EDMONTON",
+    "owner_groups": [
+        {
+            "tenancy_type": "Joint Tenants",
+            "interest": "100%",
+            "parties": [
+                {"name": "Andre Yves Lacroix"},
+                {"name": "Marie-Claude Bouchard"},
+            ],
+        }
+    ]
+}
+
+resp = requests.post("http://localhost:8000/v1/new-title-request", json=payload)
+resp.raise_for_status()
+with open("andre-lacroix-title.pdf", "wb") as fh:
+    fh.write(resp.content)
+print("Title number:", resp.headers.get("X-Title-Number"))
+```
 
 ## Testing
 

@@ -2,16 +2,17 @@ import glob
 import io
 import json
 import os
-from datetime import datetime
+from datetime import date, datetime
+from decimal import Decimal
 from pathlib import Path
-from typing import Any, Dict, Optional
+from typing import Any, Dict, List, Optional
 
 from fastapi import APIRouter, File, Form, HTTPException, UploadFile
 from fastapi.responses import StreamingResponse
 from lxml import etree
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, condecimal
 
-from app.services import ascii_parser, pdf_ingest, renderer, title_numbers, xml_validator
+from app.services import ascii_parser, pdf_ingest, renderer, title_numbers, title_request_builder, xml_validator
 
 router = APIRouter()
 
@@ -19,6 +20,54 @@ class XMLBody(BaseModel):
     xml: str
     template_id: Optional[str] = "alberta_title_v1"
     options: Dict[str, Any] = Field(default_factory=lambda: {"pdfa": True})
+
+
+class OwnerParty(BaseModel):
+    name: str
+    type: Optional[str] = "Individual"
+    aliases: Optional[List[str]] = None
+    occupation: Optional[str] = None
+    address_lines: Optional[List[str]] = None
+    province: Optional[str] = None
+    postal_code: Optional[str] = None
+    role: Optional[str] = None
+
+
+class OwnerGroup(BaseModel):
+    tenancy_type: Optional[str] = None
+    interest: Optional[str] = None
+    parties: List[OwnerParty]
+
+
+class NewTitleRequest(BaseModel):
+    reference_number: str
+    buyer_name: str
+    purchase_price: condecimal(gt=0, max_digits=13, decimal_places=2)
+    purchase_date: date
+    legal_description: str
+    municipality: str
+    municipality_code: Optional[str] = None
+    linc_number: Optional[str] = None
+    title_number: Optional[str] = None
+    registration_number: Optional[str] = None
+    rights_type: Optional[str] = title_request_builder.DEFAULT_RIGHTS_TYPE
+    estate: Optional[str] = title_request_builder.DEFAULT_ESTATE
+    tenancy_type: Optional[str] = title_request_builder.DEFAULT_TENANCY_TYPE
+    template_id: Optional[str] = title_request_builder.DEFAULT_TEMPLATE_ID
+    render_options: Dict[str, Any] = Field(default_factory=lambda: {"pdfa": True})
+    owner_groups: Optional[List[OwnerGroup]] = None
+
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "reference_number": "REQ-2025-0001",
+                "buyer_name": "Andre Yves Lacroix",
+                "purchase_price": "650000.00",
+                "purchase_date": "2025-10-08",
+                "legal_description": "PLAN 0723943 BLOCK 86 LOT 31 EXCEPTING THEREOUT ALL MINES AND MINERALS",
+                "municipality": "CITY OF EDMONTON",
+            }
+        }
 
 @router.get("/templates")
 async def list_templates():
@@ -116,6 +165,67 @@ async def render_pdf(body: XMLBody):
         raise HTTPException(status_code=422, detail=f"Failed to render PDF: {exc}") from exc
 
     return StreamingResponse(io.BytesIO(pdf_bytes), media_type="application/pdf")
+
+
+@router.post("/new-title-request")
+async def create_new_title_request(body: NewTitleRequest):
+    try:
+        owner_groups = [group.model_dump() for group in body.owner_groups] if body.owner_groups else None
+        build_result = title_request_builder.build_new_title_xml(
+            reference_number=body.reference_number,
+            buyer_name=body.buyer_name,
+            purchase_price=Decimal(body.purchase_price),
+            purchase_date=body.purchase_date,
+            legal_description=body.legal_description,
+            municipality_name=body.municipality,
+            municipality_code=body.municipality_code,
+            title_number=body.title_number,
+            registration_number=body.registration_number,
+            linc_number=body.linc_number,
+            rights_type=body.rights_type or title_request_builder.DEFAULT_RIGHTS_TYPE,
+            estate=body.estate or title_request_builder.DEFAULT_ESTATE,
+            tenancy_type=body.tenancy_type or title_request_builder.DEFAULT_TENANCY_TYPE,
+            owner_groups=owner_groups,
+        )
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+    valid, validation_errors = xml_validator.validate(build_result.xml)
+    if not valid:
+        raise HTTPException(
+            status_code=500,
+            detail={
+                "message": "Generated XML failed SPIN2 validation.",
+                "errors": validation_errors,
+            },
+        )
+
+    template_id = body.template_id or title_request_builder.DEFAULT_TEMPLATE_ID
+    options = body.render_options or {}
+    if "pdfa" not in options:
+        options = {**options, "pdfa": True}
+
+    try:
+        pdf_bytes = renderer.render(build_result.xml, template_id=template_id, options=options)
+    except HTTPException:
+        raise
+    except etree.XMLSyntaxError as exc:
+        raise HTTPException(status_code=500, detail=f"Generated XML not well-formed: {exc}") from exc
+    except FileNotFoundError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+    except RuntimeError as exc:
+        raise HTTPException(status_code=503, detail=str(exc)) from exc
+    except Exception as exc:
+        raise HTTPException(status_code=422, detail=f"Failed to render generated PDF: {exc}") from exc
+
+    buffer = io.BytesIO(pdf_bytes)
+    response = StreamingResponse(buffer, media_type="application/pdf")
+    filename = f"title_{build_result.title_number}.pdf"
+    response.headers["Content-Disposition"] = f'attachment; filename="{filename}"'
+    response.headers["X-Title-Number"] = build_result.title_number
+    response.headers["X-Registration-Number"] = build_result.registration_number
+    response.headers["X-LINC-Number"] = build_result.linc_number
+    return response
 
 class ReserveBody(BaseModel):
     strategy: Optional[str] = "sequential"

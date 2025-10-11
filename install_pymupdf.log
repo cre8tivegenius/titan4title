@@ -1,0 +1,108 @@
+Collecting pymupdf==1.24.10
+  Using cached PyMuPDF-1.24.10.tar.gz (47.0 MB)
+  Getting requirements to build wheel: started
+  Getting requirements to build wheel: finished with status 'done'
+  Installing backend dependencies: started
+  Installing backend dependencies: finished with status 'done'
+  Preparing metadata (pyproject.toml): started
+  Preparing metadata (pyproject.toml): finished with status 'error'
+  error: subprocess-exited-with-error
+  
+  × Preparing metadata (pyproject.toml) did not run successfully.
+  │ exit code: 1
+  ╰─> [85 lines of output]
+      pymupdf_c060a668979a487d8187246be2277973/setup.py: ### Starting.
+      pymupdf_c060a668979a487d8187246be2277973/setup.py: __name__: 'setup'
+      pymupdf_c060a668979a487d8187246be2277973/setup.py: platform.platform(): 'Linux-5.10.233-android12-9-00001-g3f8134695cb5-ab13232202-aarch64-with-libc'
+      pymupdf_c060a668979a487d8187246be2277973/setup.py: platform.python_version(): '3.12.11'
+      pymupdf_c060a668979a487d8187246be2277973/setup.py: sys.executable: '/data/data/com.termux/files/home/repos/title-doc-creator-pro/.venv/bin/python3'
+      pymupdf_c060a668979a487d8187246be2277973/setup.py: CPU bits: 64 sys.maxsize=9223372036854775807
+      pymupdf_c060a668979a487d8187246be2277973/setup.py: __file__: '/data/data/com.termux/files/usr/tmp/pip-install-nmcye3fa/pymupdf_c060a668979a487d8187246be2277973/setup.py'
+      pymupdf_c060a668979a487d8187246be2277973/setup.py: os.getcwd(): '/data/data/com.termux/files/usr/tmp/pip-install-nmcye3fa/pymupdf_c060a668979a487d8187246be2277973'
+      pymupdf_c060a668979a487d8187246be2277973/setup.py: sys.argv (3):
+      pymupdf_c060a668979a487d8187246be2277973/setup.py:     0: '/data/data/com.termux/files/home/repos/title-doc-creator-pro/.venv/lib/python3.12/site-packages/pip/_vendor/pyproject_hooks/_in_process/_in_process.py'
+      pymupdf_c060a668979a487d8187246be2277973/setup.py:     1: 'prepare_metadata_for_build_wheel'
+      pymupdf_c060a668979a487d8187246be2277973/setup.py:     2: '/data/data/com.termux/files/usr/tmp/tmpwuvwcclm'
+      pymupdf_c060a668979a487d8187246be2277973/setup.py: os.environ (46):
+      pymupdf_c060a668979a487d8187246be2277973/setup.py:     ANDROID_ART_ROOT: '/apex/com.android.art'
+      pymupdf_c060a668979a487d8187246be2277973/setup.py:     ANDROID_ASSETS: '/system/app'
+      pymupdf_c060a668979a487d8187246be2277973/setup.py:     ANDROID_DATA: '/data'
+      pymupdf_c060a668979a487d8187246be2277973/setup.py:     ANDROID_I18N_ROOT: '/apex/com.android.i18n'
+      pymupdf_c060a668979a487d8187246be2277973/setup.py:     ANDROID_ROOT: '/system'
+      pymupdf_c060a668979a487d8187246be2277973/setup.py:     ANDROID_STORAGE: '/storage'
+      pymupdf_c060a668979a487d8187246be2277973/setup.py:     ANDROID_TZDATA_ROOT: '/apex/com.android.tzdata'
+      pymupdf_c060a668979a487d8187246be2277973/setup.py:     ASEC_MOUNTPOINT: '/mnt/asec'
+      pymupdf_c060a668979a487d8187246be2277973/setup.py:     BOOTCLASSPATH: '/apex/com.android.art/javalib/core-oj.jar:/apex/com.android.art/javalib/core-libart.jar:/apex/com.android.art/javalib/okhttp.jar:/apex/com.android.art/javalib/bouncycastle.jar:/apex/com.android.art/javalib/apache-xml.jar:/system/framework/framework.jar:/system/framework/framework-graphics.jar:/system/framework/framework-location.jar:/system/framework/ext.jar:/system/framework/telephony-common.jar:/system/framework/voip-common.jar:/system/framework/ims-common.jar:/system_ext/framework/mediatek-carrier-config-manager.jar:/system_ext/framework/mediatek-common.jar:/system_ext/framework/mediatek-framework.jar:/system_ext/framework/mediatek-ims-base.jar:/system_ext/framework/moto-echolocateapi.jar:/system_ext/framework/payjoy-api.jar:/apex/com.android.i18n/javalib/core-icu4j.jar:/apex/com.android.adservices/javalib/framework-adservices.jar:/apex/com.android.adservices/javalib/framework-sdksandbox.jar:/apex/com.android.appsearch/javalib/framework-appsearch.jar:/apex/com.android.btservices/javalib/framework-bluetooth.jar:/apex/com.android.configinfrastructure/javalib/framework-configinfrastructure.jar:/apex/com.android.conscrypt/javalib/conscrypt.jar:/apex/com.android.devicelock/javalib/framework-devicelock.jar:/apex/com.android.healthfitness/javalib/framework-healthfitness.jar:/apex/com.android.ipsec/javalib/android.net.ipsec.ike.jar:/apex/com.android.media/javalib/updatable-media.jar:/apex/com.android.mediaprovider/javalib/framework-mediaprovider.jar:/apex/com.android.mediaprovider/javalib/framework-pdf.jar:/apex/com.android.mediaprovider/javalib/framework-pdf-v.jar:/apex/com.android.mediaprovider/javalib/framework-photopicker.jar:/apex/com.android.nfcservices/javalib/framework-nfc.jar:/apex/com.android.ondevicepersonalization/javalib/framework-ondevicepersonalization.jar:/apex/com.android.os.statsd/javalib/framework-statsd.jar:/apex/com.android.permission/javalib/framework-permission.jar:/apex/com.android.permission/javalib/framework-permission-s.jar:/apex/com.android.profiling/javalib/framework-profiling.jar:/apex/com.android.scheduling/javalib/framework-scheduling.jar:/apex/com.android.sdkext/javalib/framework-sdkextensions.jar:/apex/com.android.tethering/javalib/framework-connectivity.jar:/apex/com.android.tethering/javalib/framework-connectivity-t.jar:/apex/com.android.tethering/javalib/framework-tethering.jar:/apex/com.android.uwb/javalib/framework-uwb.jar:/apex/com.android.virt/javalib/framework-virtualization.jar:/apex/com.android.wifi/javalib/framework-wifi.jar:/apex/com.motorola.enterprise/javalib/framework-moto-enterprise.jar:/apex/com.motorola.motosecure/javalib/framework-moto-secure.jar'
+      pymupdf_c060a668979a487d8187246be2277973/setup.py:     CODEX_MANAGED_BY_NPM: '1'
+      pymupdf_c060a668979a487d8187246be2277973/setup.py:     CODEX_SANDBOX_NETWORK_DISABLED: '1'
+      pymupdf_c060a668979a487d8187246be2277973/setup.py:     COLORTERM: 'truecolor'
+      pymupdf_c060a668979a487d8187246be2277973/setup.py:     DEX2OATBOOTCLASSPATH: '/apex/com.android.art/javalib/core-oj.jar:/apex/com.android.art/javalib/core-libart.jar:/apex/com.android.art/javalib/okhttp.jar:/apex/com.android.art/javalib/bouncycastle.jar:/apex/com.android.art/javalib/apache-xml.jar:/system/framework/framework.jar:/system/framework/framework-graphics.jar:/system/framework/framework-location.jar:/system/framework/ext.jar:/system/framework/telephony-common.jar:/system/framework/voip-common.jar:/system/framework/ims-common.jar:/system_ext/framework/mediatek-carrier-config-manager.jar:/system_ext/framework/mediatek-common.jar:/system_ext/framework/mediatek-framework.jar:/system_ext/framework/mediatek-ims-base.jar:/system_ext/framework/moto-echolocateapi.jar:/system_ext/framework/payjoy-api.jar:/apex/com.android.i18n/javalib/core-icu4j.jar'
+      pymupdf_c060a668979a487d8187246be2277973/setup.py:     EXTERNAL_STORAGE: '/sdcard'
+      pymupdf_c060a668979a487d8187246be2277973/setup.py:     HISTCONTROL: 'ignoreboth'
+      pymupdf_c060a668979a487d8187246be2277973/setup.py:     HOME: '/data/data/com.termux/files/home'
+      pymupdf_c060a668979a487d8187246be2277973/setup.py:     JAVA_HOME: '/data/data/com.termux/files/usr/lib/jvm/java-21-openjdk/'
+      pymupdf_c060a668979a487d8187246be2277973/setup.py:     LANG: 'en_US.UTF-8'
+      pymupdf_c060a668979a487d8187246be2277973/setup.py:     LD_PRELOAD: '/data/data/com.termux/files/usr/lib/libtermux-exec.so'
+      pymupdf_c060a668979a487d8187246be2277973/setup.py:     OLDPWD: '/data/data/com.termux/files/home/repos/title-doc-creator-pro'
+      pymupdf_c060a668979a487d8187246be2277973/setup.py:     PATH: '/data/data/com.termux/files/usr/tmp/pip-build-env-7i2s6nul/overlay/bin:/data/data/com.termux/files/usr/tmp/pip-build-env-7i2s6nul/normal/bin:/data/data/com.termux/files/home/repos/title-doc-creator-pro/.venv/bin:/data/data/com.termux/files/usr/tmp/.tmpPVlKZQ:/data/data/com.termux/files/home/repos/codex/codex-cli/node_modules/@vscode/ripgrep/bin:/data/data/com.termux/files/usr/bin:/data/data/com.termux/files/home/.cargo/bin:Unknown'
+      pymupdf_c060a668979a487d8187246be2277973/setup.py:     PGDATA: '/data/data/com.termux/files/home/.pgdata/main'
+      pymupdf_c060a668979a487d8187246be2277973/setup.py:     PIP_BUILD_TRACKER: '/data/data/com.termux/files/usr/tmp/pip-build-tracker-cb66500v'
+      pymupdf_c060a668979a487d8187246be2277973/setup.py:     PKG_CONFIG_PATH: '/data/data/com.termux/files/usr/lib/pkgconfig'
+      pymupdf_c060a668979a487d8187246be2277973/setup.py:     PREFIX: '/data/data/com.termux/files/usr'
+      pymupdf_c060a668979a487d8187246be2277973/setup.py:     PS1: '((.venv) ) '
+      pymupdf_c060a668979a487d8187246be2277973/setup.py:     PWD: '/data/data/com.termux/files/home/repos/title-doc-creator-pro'
+      pymupdf_c060a668979a487d8187246be2277973/setup.py:     PYMUPDF_SETUP_MUPDF_BUILD: '0'
+      pymupdf_c060a668979a487d8187246be2277973/setup.py:     PYTHONNOUSERSITE: '1'
+      pymupdf_c060a668979a487d8187246be2277973/setup.py:     PYTHONPATH: '/data/data/com.termux/files/usr/tmp/pip-build-env-7i2s6nul/site'
+      pymupdf_c060a668979a487d8187246be2277973/setup.py:     SHELL: '/data/data/com.termux/files/usr/bin/bash'
+      pymupdf_c060a668979a487d8187246be2277973/setup.py:     SHLVL: '2'
+      pymupdf_c060a668979a487d8187246be2277973/setup.py:     SSH_AGENT_PID: '22596'
+      pymupdf_c060a668979a487d8187246be2277973/setup.py:     SSH_AUTH_SOCK: '/data/data/com.termux/files/usr/tmp/ssh-x7GiL52OVMpW/agent.22595'
+      pymupdf_c060a668979a487d8187246be2277973/setup.py:     SYSTEMSERVERCLASSPATH: '/system/framework/com.android.location.provider.jar:/system/framework/services.jar:/apex/com.android.adservices/javalib/service-adservices.jar:/apex/com.android.adservices/javalib/service-sdksandbox.jar:/apex/com.android.appsearch/javalib/service-appsearch.jar:/apex/com.android.art/javalib/service-art.jar:/apex/com.android.configinfrastructure/javalib/service-configinfrastructure.jar:/apex/com.android.healthfitness/javalib/service-healthfitness.jar:/apex/com.android.media/javalib/service-media-s.jar:/apex/com.android.ondevicepersonalization/javalib/service-ondevicepersonalization.jar:/apex/com.android.permission/javalib/service-permission.jar:/apex/com.android.rkpd/javalib/service-rkp.jar:/apex/com.android.virt/javalib/service-virtualization.jar:/apex/com.motorola.enterprise/javalib/service-moto-enterprise.jar:/apex/com.motorola.motosecure/javalib/service-moto-secure.jar'
+      pymupdf_c060a668979a487d8187246be2277973/setup.py:     TERM: 'xterm-256color'
+      pymupdf_c060a668979a487d8187246be2277973/setup.py:     TERMUX_EXEC__PROC_SELF_EXE: '/data/data/com.termux/files/home/repos/title-doc-creator-pro/.venv/bin/python3'
+      pymupdf_c060a668979a487d8187246be2277973/setup.py:     TERMUX_VERSION: 'googleplay.2025.10.05'
+      pymupdf_c060a668979a487d8187246be2277973/setup.py:     TMP: '/data/data/com.termux/files/usr/tmp'
+      pymupdf_c060a668979a487d8187246be2277973/setup.py:     TMPDIR: '/data/data/com.termux/files/usr/tmp'
+      pymupdf_c060a668979a487d8187246be2277973/setup.py:     TMUX_TMPDIR: '/data/data/com.termux/files/usr/var/run'
+      pymupdf_c060a668979a487d8187246be2277973/setup.py:     VIRTUAL_ENV: '/data/data/com.termux/files/home/repos/title-doc-creator-pro/.venv'
+      pymupdf_c060a668979a487d8187246be2277973/setup.py:     VIRTUAL_ENV_PROMPT: '(.venv) '
+      pymupdf_c060a668979a487d8187246be2277973/setup.py:     _: '/data/data/com.termux/files/home/repos/title-doc-creator-pro/.venv/bin/pip'
+      pymupdf_c060a668979a487d8187246be2277973/setup.py:     _PYPROJECT_HOOKS_BACKEND_PATH: '/data/data/com.termux/files/usr/tmp/pip-install-nmcye3fa/pymupdf_c060a668979a487d8187246be2277973'
+      pymupdf_c060a668979a487d8187246be2277973/setup.py:     _PYPROJECT_HOOKS_BUILD_BACKEND: 'setup'
+      pymupdf_c060a668979a487d8187246be2277973/setup.py: get_mupdf_internal(): out='dir' location='0' sha=None
+      Traceback (most recent call last):
+        File "/data/data/com.termux/files/home/repos/title-doc-creator-pro/.venv/lib/python3.12/site-packages/pip/_vendor/pyproject_hooks/_in_process/_in_process.py", line 389, in <module>
+          main()
+        File "/data/data/com.termux/files/home/repos/title-doc-creator-pro/.venv/lib/python3.12/site-packages/pip/_vendor/pyproject_hooks/_in_process/_in_process.py", line 373, in main
+          json_out["return_val"] = hook(**hook_input["kwargs"])
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        File "/data/data/com.termux/files/home/repos/title-doc-creator-pro/.venv/lib/python3.12/site-packages/pip/_vendor/pyproject_hooks/_in_process/_in_process.py", line 178, in prepare_metadata_for_build_wheel
+          whl_basename = backend.build_wheel(metadata_directory, config_settings)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        File "/data/data/com.termux/files/usr/tmp/pip-install-nmcye3fa/pymupdf_c060a668979a487d8187246be2277973/pipcl.py", line 639, in build_wheel
+          items = self._call_fn_build(config_settings)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        File "/data/data/com.termux/files/usr/tmp/pip-install-nmcye3fa/pymupdf_c060a668979a487d8187246be2277973/pipcl.py", line 809, in _call_fn_build
+          ret = self.fn_build()
+                ^^^^^^^^^^^^^^^
+        File "/data/data/com.termux/files/usr/tmp/pip-install-nmcye3fa/pymupdf_c060a668979a487d8187246be2277973/setup.py", line 515, in build
+          mupdf_local, mupdf_location = get_mupdf()
+                                        ^^^^^^^^^^^
+        File "/data/data/com.termux/files/usr/tmp/pip-install-nmcye3fa/pymupdf_c060a668979a487d8187246be2277973/setup.py", line 497, in get_mupdf
+          return get_mupdf_internal('dir', m)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        File "/data/data/com.termux/files/usr/tmp/pip-install-nmcye3fa/pymupdf_c060a668979a487d8187246be2277973/setup.py", line 438, in get_mupdf_internal
+          assert os.path.isdir(location), f'Local MuPDF does not exist: {location=}'
+                 ^^^^^^^^^^^^^^^^^^^^^^^
+      AssertionError: Local MuPDF does not exist: location='0'
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: metadata-generation-failed
+
+× Encountered error while generating package metadata.
+╰─> See above for output.
+
+note: This is an issue with the package mentioned above, not pip.
+hint: See above for details.
